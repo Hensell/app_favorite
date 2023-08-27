@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CharacterProvider()),
       ],
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Rick and Morty',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(

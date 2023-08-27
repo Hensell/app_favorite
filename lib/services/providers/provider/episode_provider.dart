@@ -30,8 +30,8 @@ class EpisodeProvider with ChangeNotifier {
   late SembastProvider db;
   EpisodeProvider() {
     db = SembastProvider();
-    db.init();
-    _init();
+
+    db.init().then((value) => _init());
   }
 
   Future<void> _init() async {
@@ -47,12 +47,11 @@ class EpisodeProvider with ChangeNotifier {
 
       _isLoading = false;
       _totalPages = jsonData['info']['pages'];
-      if (favoriteEpisodes.isNotEmpty) {
-        for (final episode in _episodes) {
-          episode.isFavorite = !favoriteEpisodes
-              .any((favEpisode) => favEpisode.id == episode.id);
-        }
-      }
+
+      await Future.forEach(_episodes, (episode) async {
+        episode.isFavorite =
+            favoriteEpisodes.any((favEpisode) => favEpisode.id == episode.id);
+      });
       getAllFavorites();
       notifyListeners();
     } else {

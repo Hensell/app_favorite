@@ -25,7 +25,6 @@ class SembastProvider {
 
   Future<Database> init() async {
     _db = await _openDb();
-
     return _db;
   }
 
