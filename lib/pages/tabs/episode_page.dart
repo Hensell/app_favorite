@@ -12,12 +12,6 @@ class EpisodePage extends StatefulWidget {
 
 class _EpisodePageState extends State<EpisodePage> {
   @override
-  void initState() {
-    Provider.of<EpisodeProvider>(context, listen: false).getEpisode(0);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -54,6 +48,11 @@ class _EpisodePageState extends State<EpisodePage> {
       ),
       body: SingleChildScrollView(
         child: Consumer<EpisodeProvider>(builder: (context, data, _) {
+          if (data.notingToShow) {
+            return const Center(
+              child: Text("Sin resultados"),
+            );
+          }
           if (data.isLoading) {
             return const Center(
               child: Center(
@@ -63,7 +62,8 @@ class _EpisodePageState extends State<EpisodePage> {
           } else {
             return Wrap(
               children: List.generate(data.episodes.length, (index) {
-                return cardEpisode(data, index);
+                return cardEpisode(
+                    data, index, data.episodes[index].isFavorite);
               }),
             );
           }
@@ -72,7 +72,7 @@ class _EpisodePageState extends State<EpisodePage> {
     );
   }
 
-  cardEpisode(EpisodeProvider data, int index) {
+  cardEpisode(EpisodeProvider data, int index, bool isFavorite) {
     return Container(
       width: MediaQuery.of(context).size.width < 600
           ? (MediaQuery.of(context).size.width / 2) - 10
@@ -104,9 +104,15 @@ class _EpisodePageState extends State<EpisodePage> {
             maxLines: 1,
           ),
           trailing: IconButton(
-              isSelected: false,
-              onPressed: () {},
-              icon: const Icon(Icons.favorite))),
+              isSelected: data.episodes[index].isFavorite,
+              selectedIcon: const Icon(Icons.favorite),
+              onPressed: () {
+                Provider.of<EpisodeProvider>(context, listen: false)
+                    .toggleFavorite(data.episodes[index]);
+              },
+              icon: const Icon(
+                Icons.favorite_border,
+              ))),
     );
   }
 }

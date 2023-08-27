@@ -6,7 +6,7 @@ class EpisodeModel {
   final List<String> characters;
   final String url;
   final String created;
-  final bool isFavorite;
+  bool isFavorite;
 
   EpisodeModel(
       {required this.id,
@@ -28,5 +28,33 @@ class EpisodeModel {
       url: json['url'],
       created: json['created'],
     );
+  }
+  factory EpisodeModel.fromMap(Map<String, dynamic> map) {
+    return EpisodeModel(
+      id: map['id'],
+      name: map['name'],
+      airDate: map['airDate'],
+      episodeCode: map['episodeCode'],
+      characters: List<String>.from(map['characters']),
+      url: map['url'],
+      created: map['created'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "name": name,
+      "airDate": airDate,
+      "episodeCode": episodeCode,
+      "characters": characters,
+      "url": url,
+      "created": created,
+      "isFavorite": isFavorite
+    };
+  }
+
+  void toggleFavorite() {
+    isFavorite = !isFavorite;
   }
 }

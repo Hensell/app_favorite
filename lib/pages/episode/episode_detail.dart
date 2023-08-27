@@ -76,9 +76,6 @@ class _EpisodeDetailState extends State<EpisodeDetail> {
             'Air date: ${widget.episodeModel.airDate}',
           ),
           Text(
-            'URL: ${widget.episodeModel.url}',
-          ),
-          Text(
             'Create: ${widget.episodeModel.created}',
           ),
         ],
